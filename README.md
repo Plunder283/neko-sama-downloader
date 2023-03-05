@@ -1,14 +1,18 @@
 <h1 align="center">Welcome to neko-sama-downloader 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/LICENSE" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
 </p>
 
-> Un script python qui permet de récupérer des liens des vidéos du site : neko-sama.fr Les liens sont enregistrés dans un fichier.txt avec le nom de l'anime.
+> Un script python qui permet de récupérer les liens des vidéos du site : neko-sama.fr Les liens sont enregistrés dans un fichier.txt avec le nom de l'anime. Le synopsis est écrit au début du fichier.
 
-## Install
+<img alt="neko-sama-downloader" src="download.png"/>
+
+### ✨ [Demo](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/download.png)
+
+## ⚡Install
 
 ```sh
 pip install -r requirements.txt
@@ -39,3 +43,4 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2023 [-Sk_](https://github.com/Soma-Yukihira).<br />
 This project is [MIT](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/LICENSE) licensed.
+
