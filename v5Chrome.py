@@ -95,7 +95,7 @@ def test_connexion():
                 print('connexion réussi.')
             response = requests.get("http://httpbin.org/ip")
             public_ip = response.json()["origin"]
-            print(f"Adresse IP avant proxy : {public_ip}\n")
+            print(f"        Adresse IP avant proxy : {public_ip}\n")
         except requests.exceptions.ConnectionError:
             pass
 
@@ -179,12 +179,12 @@ try:
     test_connexion()
 
     # Demander à l'utilisateur de choisir une fonction de lecture de proxy
-    print("[default = 1] [random = 2] [test = 3] [no-proxy = 0]")
+    print("    [default = 1]    [random = 2]    [test = 3]    [no-proxy = 0]")
     function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
 
     # Exécuter la fonction choisie par l'utilisateur
     while function_name not in ["1", "2", "3", "0"]:
-        print("Choix proxy invalide.")
+        print("     Choix proxy invalide.")
         function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
 
 
@@ -196,7 +196,7 @@ try:
     elif function_name == "3":
         ip, port = read_txt_proxy_test()
     elif function_name == "0":
-        print("Le script est lancé sans proxy")
+        print("     Le script est lancé sans proxy")
         ip = None
         port = None
 
