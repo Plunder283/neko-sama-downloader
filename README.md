@@ -24,6 +24,12 @@ pip install -r requirements.txt
 python v5Chrome.py
 ```
 
+## 🌪Stop Script
+
+```sh
+Ctrl + C
+```
+
 ## 🚀Author
 
 👤 **-Sk_**
