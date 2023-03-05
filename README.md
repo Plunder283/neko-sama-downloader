@@ -14,13 +14,13 @@
 pip install -r requirements.txt
 ```
 
-## Usage
+## 🚀Usage
 
 ```sh
 python v5Chrome.py
 ```
 
-## Author
+## 🚀Author
 
 👤 **-Sk_**
 
@@ -39,6 +39,3 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2023 [-Sk_](https://github.com/Soma-Yukihira).<br />
 This project is [MIT](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
