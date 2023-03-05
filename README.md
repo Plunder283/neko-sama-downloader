@@ -10,9 +10,10 @@
 
 <img alt="neko-sama-downloader" src="download.png"/>
 
-### ✨ [Demo](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/download.png)
+## 👀Demo
 
-## Demo
+https://user-images.githubusercontent.com/74402541/222991235-541e3001-9429-4447-a339-54df048d6d36.mp4
+
 
 
 ## ⚡Install
