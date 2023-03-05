@@ -13,7 +13,7 @@
 ### ✨ [Demo](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/download.png)
 
 ## Demo
-<video src='demo.mp4' />
+<video src='demo.mp4' width=180/>
 
 ## ⚡Install
 
