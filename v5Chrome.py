@@ -234,7 +234,14 @@ try:
         driver.get(url)    
 
         # Initialiser un compteur pour les épisodes
-        episode = 1
+        #episode = 1
+
+        path = urllib.parse.urlparse(driver.current_url).path
+        episode_number = re.search(r'/\d{1,3}_', path).group()[1:-1]
+        if episode_number[0] == '0':
+            episode_number = episode_number[1:]
+        episode = int(episode_number)
+        print(f"Le numéro de l'épisode est : {episode}\n")
 
         print("Le téléchargement des url commence dans 10 secondes...")
 
