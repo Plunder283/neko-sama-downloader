@@ -12,6 +12,8 @@
 
 ### ✨ [Demo](https://github.com/Soma-Yukihira/neko-sama-downloader/blob/main/download.png)
 
+## Demo
+
 ## ⚡Install
 
 ```sh
