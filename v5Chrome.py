@@ -183,7 +183,7 @@ try:
     function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
 
     # Exécuter la fonction choisie par l'utilisateur
-    while function_name not in ["1", "2", "3"]:
+    while function_name not in ["1", "2", "3", "0"]:
         print("Choix proxy invalide.")
         function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
 
@@ -196,7 +196,9 @@ try:
     elif function_name == "3":
         ip, port = read_txt_proxy_test()
     elif function_name == "0":
-        ip, port = None
+        ip = None
+        port = None
+
 
     #ip, port = read_txt_proxy()
 
