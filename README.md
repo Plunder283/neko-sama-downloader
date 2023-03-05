@@ -6,7 +6,7 @@
   </a>
 </p>
 
-> Un script python qui permet de récupérer les liens des vidéos du site : neko-sama.fr Les liens sont enregistrés dans un fichier.txt avec le nom de l'anime. Le synopsis est écrit au début du fichier.
+> Un script python qui permet de récupérer les liens de streaming du site : neko-sama.fr Les liens sont enregistrés dans un fichier.txt avec le nom de l'anime. Le synopsis est écrit au début du fichier.
 
 <img alt="neko-sama-downloader" src="download.png"/>
 
