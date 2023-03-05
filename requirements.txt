@@ -1,0 +1,7 @@
+undetected_chromedriver==3.4.6
+selenium==4.8.2
+urllib3==1.26.14
+configparser==5.3.0
+traceback2==1.4.0
+ctypes-callable==1.0.4
+subprocess.run==0.0.8
