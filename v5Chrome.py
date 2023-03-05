@@ -227,6 +227,7 @@ try:
         print("Fin du test du proxy.\n")
 
     ip_publique()
+    print("Exemple URL: https://www.neko-sama.fr/anime/episode/3458-hagane-no-renkinjutsushi-fullmetal-alchemist-01_vostfr\n")
 
 ##################################################################################################################################################
     # Définir une fonction pour récupérer les URLs des épisodes
@@ -332,7 +333,7 @@ try:
         
         # Vérifier si l'URL est valide
         while not url.startswith("https://www.neko-sama.fr/anime/episode/"):
-            print("URL invalide. Veuillez saisir une URL valide.")
+            print("     URL invalide. Veuillez saisir une URL valide.")
             print("Exemple URL valide : https://www.neko-sama.fr/anime/episode/7735-nanatsu-no-taizai-01_vostfr\n")
             url = input("Entrez l'URL : ")
         if url:
@@ -345,7 +346,7 @@ try:
 
     # Vérifier si l'URL est valide
     while not url.startswith("https://www.neko-sama.fr/anime/episode/"):
-        print("URL invalide. Veuillez saisir une URL valide.")
+        print("     URL invalide. Veuillez saisir une URL valide.")
         print("Exemple URL valide : https://www.neko-sama.fr/anime/episode/7735-nanatsu-no-taizai-01_vostfr\n")
         url = input("Entrez l'URL : ")
         
