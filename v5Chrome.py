@@ -196,6 +196,7 @@ try:
     elif function_name == "3":
         ip, port = read_txt_proxy_test()
     elif function_name == "0":
+        print("Le script est lancé sans proxy")
         ip = None
         port = None
 
@@ -236,11 +237,13 @@ try:
         # Initialiser un compteur pour les épisodes
         #episode = 1
 
-        path = urllib.parse.urlparse(driver.current_url).path
-        episode_number = re.search(r'/\d{1,3}_', path).group()[1:-1]
-        if episode_number[0] == '0':
-            episode_number = episode_number[1:]
+        # Trouver le numéro de l'épisode à la fin de l'URL
+        episode_number = re.search(r'\d{1,3}(?=_vostfr)', url).group()
+
+        # Convertir le numéro de l'épisode en entier
         episode = int(episode_number)
+
+        # Afficher le numéro de l'épisode
         print(f"Le numéro de l'épisode est : {episode}\n")
 
         print("Le téléchargement des url commence dans 10 secondes...")
