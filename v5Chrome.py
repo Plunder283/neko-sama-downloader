@@ -258,8 +258,9 @@ try:
         # Extraire le titre de la série
         title = driver.find_element(By.CSS_SELECTOR, "div.row.no-gutters h1").text
 
-        # Supprimer les mots contenant "01 VOSTFR" ou "VOSTFR" du titre
-        title = re.sub(r'\b(01 )?VOSTFR\b', '', title)
+        # Supprimer les mots contenant des nombres suivis de "VOSTFR" du titre
+        title = re.sub(r'\b(\d{2,4} )?VOSTFR\b', '', title)
+
 
         # Remplacer les espaces et les caractères spéciaux par des traits d'union
         filename = re.sub(r'[^\w\s-]', '', title.strip().replace(' ', '-'))
