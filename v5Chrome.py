@@ -300,6 +300,39 @@ try:
                 next_button.click()
                 
             except:
+                #pour plus tard
+                #verifier les animes en cours par l'url si page 404 rencontré faire l'except
+                # Trouver le numéro de l'épisode à la fin de l'URL
+
+
+                # Chercher le nombre dans l'URL à l'aide d'une expression régulière
+                number = int(re.search(r'(\d+)(?=_vostfr)', driver.current_url).group(1))
+
+                # Incrémenter le nombre de 1
+                new_number = number + 1
+
+                # Ajouter un 0 devant le nombre si le nombre est inférieur à 10
+                if new_number < 10:
+                    new_number_str = '0' + str(new_number)
+                else:
+                    new_number_str = str(new_number)
+
+                # Remplacer le nombre dans l'URL par le nouveau nombre incrémenté
+                new_url = re.sub(r'(\d+)(?=_vostfr)', new_number_str, driver.current_url)
+
+                print(f'L\'URL originale est : {driver.current_url}')
+                print(f'L\'URL incrémentée est : {new_url}')
+
+                urlz = "https://www.example.com/page-non-trouvee"
+                response = requests.get(urlz)
+
+                if response.status_code == 404:
+                    print(f"La page {urlz} n'a pas été trouvée.")
+                else:
+                    print(f"La page {urlz} a été trouvée.")
+
+
+###########################################################################################################################################
                 if "/anime/episode" in url:
                     url = url.replace("/anime/episode/", "/anime/info/")
                     
