@@ -21,7 +21,7 @@ options = uc.ChromeOptions()
 options.add_argument("--headless")
 options.add_argument("--disable-gpu")
 options.add_argument("--log-level=3")
-options.add_argument("--window-size=500,500")
+options.add_argument("--window-size=900,500")
 options.add_argument("--disable-extensions")  # désactiver toutes les extensions
 options.add_argument("--disable-dev-shm-usage")  # éviter les problèmes de mémoire partagée
 options.add_argument("--disable-blink-features=AutomationControlled") # éviter la détection du navigateur
@@ -267,6 +267,9 @@ try:
 
         print(f"Le fichier {filename}.txt a bien été créé.\n")
 
+        # Stocker la dernière URL trouvée
+        last_url = driver.current_url
+
         # Boucle pour répéter le processus de récupération de l'URL et de navigation
         while True:
             # Récupérer l'URL de l'iframe
@@ -298,69 +301,76 @@ try:
                 #time.sleep(random.uniform(1, 2))
                 
                 next_button.click()
+
+                # Stocker la dernière URL trouvée
+                last_url = driver.current_url
                 
             except:
                 #pour plus tard
                 #verifier les animes en cours par l'url si page 404 rencontré faire l'except
                 # Trouver le numéro de l'épisode à la fin de l'URL
+                try:
 
+                    # Chercher le nombre dans l'URL à l'aide d'une expression régulière
+                    number = int(re.search(r'(\d+)(?=_vostfr)', last_url).group(1))
 
-                # Chercher le nombre dans l'URL à l'aide d'une expression régulière
-                number = int(re.search(r'(\d+)(?=_vostfr)', driver.current_url).group(1))
+                    # Incrémenter le nombre de 1
+                    new_number = number + 1
 
-                # Incrémenter le nombre de 1
-                new_number = number + 1
+                    # Ajouter un 0 devant le nombre si le nombre est inférieur à 10
+                    if new_number < 10:
+                        new_number_str = '0' + str(new_number)
+                    else:
+                        new_number_str = str(new_number)
 
-                # Ajouter un 0 devant le nombre si le nombre est inférieur à 10
-                if new_number < 10:
-                    new_number_str = '0' + str(new_number)
-                else:
-                    new_number_str = str(new_number)
+                    # Remplacer le nombre dans l'URL par le nouveau nombre incrémenté
+                    new_url = re.sub(r'(\d+)(?=_vostfr)', new_number_str, last_url)
 
-                # Remplacer le nombre dans l'URL par le nouveau nombre incrémenté
-                new_url = re.sub(r'(\d+)(?=_vostfr)', new_number_str, driver.current_url)
+                    print(f'L\'URL actuelle est : {driver.current_url}')
+                    print(f'L\'URL incrémentée est : {new_url}\n')
 
-                print(f'L\'URL originale est : {driver.current_url}')
-                print(f'L\'URL incrémentée est : {new_url}')
+                    response = requests.get(new_url)
 
-                urlz = "https://www.example.com/page-non-trouvee"
-                response = requests.get(urlz)
+                    if response.status_code == 404:
+                        print(f"La page {new_url} n'a pas été trouvée.")
+                        raise ValueError('La page n\'a pas été trouvée')
+                    else:
+                        print(f"La page {new_url} a été trouvée.")
 
-                if response.status_code == 404:
-                    print(f"La page {urlz} n'a pas été trouvée.")
-                else:
-                    print(f"La page {urlz} a été trouvée.")
+                     # Stocker la dernière URL trouvée
+                    last_url = new_url
 
 
 ###########################################################################################################################################
-                if "/anime/episode" in url:
-                    url = url.replace("/anime/episode/", "/anime/info/")
-                    
-                if url.endswith("-01_vostfr"):
-                    url = url.replace("-01_vostfr", "_vostfr")
-                elif re.search(r'-\d{2,5}_vostfr$', url):
-                    url = re.sub(r'-\d{2,5}_vostfr$', '_vostfr', url) 
+                except:
+                    if "/anime/episode" in url:
+                        url = url.replace("/anime/episode/", "/anime/info/")
+                        
+                    if url.endswith("-01_vostfr"):
+                        url = url.replace("-01_vostfr", "_vostfr")
+                    elif re.search(r'-\d{2,5}_vostfr$', url):
+                        url = re.sub(r'-\d{2,5}_vostfr$', '_vostfr', url) 
 
-                if url.endswith("-01_vf"):
-                    url = url.replace("-01_vf", "_vf")
-                elif re.search(r'-\d{2,5}_vf$', url):
-                    url = re.sub(r'-\d{2,5}_vf$', '_vf', url) 
+                    if url.endswith("-01_vf"):
+                        url = url.replace("-01_vf", "_vf")
+                    elif re.search(r'-\d{2,5}_vf$', url):
+                        url = re.sub(r'-\d{2,5}_vf$', '_vf', url) 
+                        
+                    # Naviguer vers l'URL modifiée
+                    driver.execute_script(f"window.location.href = '{url}';")
                     
-                # Naviguer vers l'URL modifiée
-                driver.execute_script(f"window.location.href = '{url}';")
-                
-                # Récupérer le texte dans la balise HTML <div class="synopsis">
-                synopsis_text = driver.find_element(By.CSS_SELECTOR, "div.synopsis p").text
+                    # Récupérer le texte dans la balise HTML <div class="synopsis">
+                    synopsis_text = driver.find_element(By.CSS_SELECTOR, "div.synopsis p").text
 
-                # Enregistrer le synopsis au début du fichier .txt
-                with open(f"url/{filename}.txt", "r+") as file:
-                    content = file.read()
-                    file.seek(0, 0)
-                    file.write(f"Synopsis:\n\n{synopsis_text}\n\n{content}")
-                    print(f"Le synopsis à été écrit au début du fichier\n")
-                    
-                print(f"Tous les épisodes ont été téléchargés")
-                break
+                    # Enregistrer le synopsis au début du fichier .txt
+                    with open(f"url/{filename}.txt", "r+") as file:
+                        content = file.read()
+                        file.seek(0, 0)
+                        file.write(f"Synopsis:\n\n{synopsis_text}\n\n{content}")
+                        print(f"Le synopsis à été écrit au début du fichier\n")
+                        
+                    print(f"Tous les épisodes ont été téléchargés")
+                    break
 
         # Demander une nouvelle URL
         url = input("Entrez une nouvelle URL : ")
