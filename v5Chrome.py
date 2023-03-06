@@ -328,16 +328,14 @@ try:
 
                     driver.get(new_url)
 
-                    print(f'L\'URL actuelle est : {last_url}')
-                    print(f'L\'URL incrémentée est : {new_url}\n')
+                    #print(f'L\'URL actuelle est : {last_url}')
+                    #print(f'L\'URL incrémentée est : {new_url}\n')
 
                     response = requests.get(new_url)
 
                     if response.status_code == 404:
-                        print(f"La page {new_url} n'a pas été trouvée.")
+                        #print(f"La page {new_url} n'a pas été trouvée.")
                         raise ValueError('La page n\'a pas été trouvée')
-                    else:
-                        print(f"La page {new_url} a été trouvée.")
 
                      # Stocker la dernière URL trouvée
                     last_url = new_url
