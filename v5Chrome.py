@@ -21,7 +21,7 @@ options = uc.ChromeOptions()
 options.add_argument("--headless")
 options.add_argument("--disable-gpu")
 options.add_argument("--log-level=3")
-options.add_argument("--window-size=900,500")
+options.add_argument("--window-size=500,500")
 options.add_argument("--disable-extensions")  # désactiver toutes les extensions
 options.add_argument("--disable-dev-shm-usage")  # éviter les problèmes de mémoire partagée
 options.add_argument("--disable-blink-features=AutomationControlled") # éviter la détection du navigateur
@@ -326,7 +326,9 @@ try:
                     # Remplacer le nombre dans l'URL par le nouveau nombre incrémenté
                     new_url = re.sub(r'(\d+)(?=_vostfr)', new_number_str, last_url)
 
-                    print(f'L\'URL actuelle est : {driver.current_url}')
+                    driver.get(new_url)
+
+                    print(f'L\'URL actuelle est : {last_url}')
                     print(f'L\'URL incrémentée est : {new_url}\n')
 
                     response = requests.get(new_url)
