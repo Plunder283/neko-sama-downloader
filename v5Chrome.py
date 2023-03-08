@@ -120,26 +120,23 @@ def read_txt_proxy_section(section_name):
         return None
 
 ###################################
-def read_txt_proxy_random():
-    config = configparser.ConfigParser()
-    config.read('proxy.txt')
-
-    # Ajouter automatiquement toutes les sections à la liste proxy_names
-    proxy_names = config.sections()
-    proxy_names.append('test')
-
-    while True:
-        section_name = random.choice(proxy_names)
-        if section_name != 'test':
-            return read_txt_proxy_section(section_name)
-
-###################################
 def read_txt_proxy_default():
     return read_txt_proxy_section('proxy')
 
 ###################################
-def read_txt_proxy_test():
-    return read_txt_proxy_section('test')
+def read_txt_proxy_perso():
+    # Demander l'adresse IP et le port du proxy à l'utilisateur
+    print("Format de l'adresse IP du proxy : adresse_IP:port")
+    enter_proxy = input("Entrez l'adresse IP du proxy : ")
+    # Vérifier si l'entrée du proxy est bien formatée
+    if ":" not in enter_proxy:
+        print("     Le format du proxy est incorrect.")
+        enter_proxy = input("Entrez l'adresse IP du proxy : ")
+    ip, port = enter_proxy.split(':')
+    options.add_argument(f"--proxy-server={ip}:{port}")
+    print(f"L'adresse IP du proxy est : {ip}")
+    print(f"Le port du proxy est : {port}\n")
+    return ip, port
 
 
 ##################################################################################################################################################
@@ -160,7 +157,8 @@ def test_proxy_script(driver, url):
         result = driver.execute_script(script)
 
         return result
-    except:
+    except Exception as e:
+        print(f"Erreur de connexion via proxy : {e}")
         return False
 ##################################################################################################################################################
 
@@ -172,6 +170,43 @@ def ip_publique():
 
     print(f"L'adresse IP publique est : {public_ip}")
 ##################################################################################################################################################
+def options_nav_no_proxy():
+    options = uc.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--log-level=3")
+    options.add_argument("--window-size=500,500")
+    options.add_argument("--disable-extensions")  # désactiver toutes les extensions
+    options.add_argument("--disable-dev-shm-usage")  # éviter les problèmes de mémoire partagée
+    options.add_argument("--disable-blink-features=AutomationControlled") # éviter la détection du navigateur
+    driver = uc.Chrome(options=options)
+    driver.set_window_size(500, 500)
+    return driver
+##################################################################################################################################################
+def test_and_config_proxy(driver, ip, port):
+    if test_proxy_script(driver, "http://httpbin.org/ip"):
+        elapsed_time = time.time() - start_time
+        print("Le proxy fonctionne correctement.")
+        print(f"Fin du test du proxy. Temps écoulé : {elapsed_time:.2f} secondes.\n")
+        print("Test du proxy sur neko-sama")
+        if test_proxy_script(driver, "https://www.neko-sama.fr/"):
+            elapsed_time = time.time() - start_time
+            print("Le proxy sur neko-sama fonctionne correctement.")
+            print(f"Fin du test du proxy. Temps écoulé : {elapsed_time:.2f} secondes.\n")
+        else:
+            elapsed_time = time.time() - start_time
+            print(f"Le proxy sur neko-sama ne fonctionne pas. Temps écoulé : {elapsed_time:.2f} sec. Le script sera exécuté sans proxy.")
+            driver.quit()
+            driver = options_nav_no_proxy()
+            print("Fin du test du proxy.\n")
+    else:
+        elapsed_time = time.time() - start_time
+        print(f"Le proxy ne fonctionne pas. Temps écoulé : {elapsed_time:.2f} sec. Le script sera exécuté sans proxy.")
+        driver.quit()
+        driver = options_nav_no_proxy()
+        print("Fin du test du proxy.\n")
+    return driver
+##################################################################################################################################################
 
 try:
     launch_fullscreen()
@@ -179,11 +214,11 @@ try:
     test_connexion()
 
     # Demander à l'utilisateur de choisir une fonction de lecture de proxy
-    print("    [default = 1]    [random = 2]    [test = 3]    [no-proxy = 0]")
-    function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
+    print("    [default = 1]    [proxy perso = 2]    [no-proxy = 0]")
+    function_name = input("Veuillez choisir un proxy : [1/2/0] ")
 
     # Exécuter la fonction choisie par l'utilisateur
-    while function_name not in ["1", "2", "3", "0"]:
+    while function_name not in ["1", "2", "0"]:
         print("     Choix proxy invalide.")
         function_name = input("Veuillez choisir un proxy : [1/2/3/0] ")
 
@@ -192,11 +227,9 @@ try:
     if function_name == "1":
         ip, port = read_txt_proxy_default()
     elif function_name == "2":
-        ip, port = read_txt_proxy_random()
-    elif function_name == "3":
-        ip, port = read_txt_proxy_test()
+        ip, port = read_txt_proxy_perso()
     elif function_name == "0":
-        print("     Le script est lancé sans proxy")
+        print("     Le script est lancé sans proxy\n")
         ip = None
         port = None
 
@@ -207,24 +240,13 @@ try:
     driver = uc.Chrome(options=options)
     driver.set_window_size(500, 500)
 
-    # Tester le proxy s'il est utilisé
+    #Tester le proxy s'il est utilisé
     if ip and port:
-        if test_proxy_script(driver, "http://httpbin.org/ip"):
-            print("Le proxy fonctionne correctement.")
-        else:
-            print("Le proxy ne fonctionne pas. Le script sera exécuté sans proxy.\n")
-            options = uc.ChromeOptions()
-            options.add_argument("--headless")
-            options.add_argument("--disable-gpu")
-            options.add_argument("--log-level=3")
-            options.add_argument("--window-size=500,500")
-            options.add_argument("--disable-extensions")  # désactiver toutes les extensions
-            options.add_argument("--disable-dev-shm-usage")  # éviter les problèmes de mémoire partagée
-            options.add_argument("--disable-blink-features=AutomationControlled") # éviter la détection du navigateur
-            driver.quit()
-            driver = uc.Chrome(options=options)
-            driver.set_window_size(500, 500)
-        print("Fin du test du proxy.\n")
+        start_time = time.time()
+        driver = test_and_config_proxy(driver, ip, port)
+    else:
+        driver.quit()
+        driver = options_nav_no_proxy()
 
     ip_publique()
     print("Exemple URL: https://www.neko-sama.fr/anime/episode/3458-hagane-no-renkinjutsushi-fullmetal-alchemist-01_vostfr\n")
@@ -233,7 +255,7 @@ try:
     # Définir une fonction pour récupérer les URLs des épisodes
     def get_episode_urls(driver, url):
         # Naviguer vers la première page
-        driver.get(url)    
+        driver.get(url)
 
         # Initialiser un compteur pour les épisodes
         #episode = 1
