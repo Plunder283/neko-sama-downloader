@@ -261,7 +261,10 @@ try:
         #episode = 1
 
         # Trouver le numéro de l'épisode à la fin de l'URL
-        episode_number = re.search(r'\d{1,3}(?=_vostfr)', url).group()
+        episode_number = re.search(r'\d{1,3}(?=_vostfr)', url)
+        
+        # Si l'episode est un film il n'a pas de numero d'episode donc on remplace le NoneType par 0 pour eviter une erreur (Plunder)
+        episode_number = 0 if episode_number == None else episode_number.group()
 
         # Convertir le numéro de l'épisode en entier
         episode = int(episode_number)
